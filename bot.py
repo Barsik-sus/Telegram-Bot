@@ -5,8 +5,8 @@ from telebot import types
 import datetime
 
 
-API_KEY = '1013265757:AAE8RA0exkvxKpaFTUwoSaboE-ukhqIlNM8'
-DATABASE_URL='postgres://fcghlspntcpape:e1d2d05611b340b095a50295ff82509c79cda220e98bdc2d4776379252d1b948@ec2-54-247-71-245.eu-west-1.compute.amazonaws.com:5432/d80kfnikb15p43'
+API_KEY = os.environ['API_KEY']
+DATABASE_URL=os.environ['DATABASE_URL']
 
 
 today = datetime.datetime.today()
