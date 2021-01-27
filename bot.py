@@ -4,13 +4,13 @@ import telebot
 from telebot import types
 
 import datetime
+import pytz
 
 
 API_KEY = os.environ['API_KEY']
 DATABASE_URL=os.environ['DATABASE_URL']
 
 
-today = datetime.datetime.today()
 
 db = database.DB(DATABASE_URL)
 
@@ -39,7 +39,7 @@ class Bot:
         self.set_real_today()
 
     def set_real_today(self):
-        self.today = datetime.datetime.today()
+        self.today = datetime.datetime.now(pytz.timezone('Europe/Kiev'))
 
     # LaU = [['Lesson','URL'],...]
     def generate_markup(self, LaU, markup = None):
