@@ -8,7 +8,7 @@ import pytz
 
 
 API_KEY = os.environ['API_KEY']
-DATABASE_URL=os.environ['DATABASE_URL']
+DATABASE_URL=os.environ['HEROKU_POSTGRESQL_IVORY_URL']
 
 
 
