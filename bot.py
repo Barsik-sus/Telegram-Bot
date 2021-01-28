@@ -58,21 +58,21 @@ class Bot:
         def start_message(message):
             self.bot.send_message(message.chat.id,'Введите пароль:', reply_markup=markup)
 
-    @bot.message_handler(func=lambda message: True, content_types=['text'])
-    def check_password(message):
-        if message.text == PASSWORD:
-            Accessed = True
-            timetable = get_timetable(self.today)
+        @self.bot.message_handler(func=lambda message: True, content_types=['text'])
+        def check_password(message):
+            if message.text == PASSWORD:
+                Accessed = True
+                timetable = get_timetable(self.today)
 
-            markup = self.generate_markup(timetable)
+                markup = self.generate_markup(timetable)
 
-            previousB = types.InlineKeyboardButton(text = '<', callback_data = 'previous')
-            todayB = types.InlineKeyboardButton(text = '=', callback_data = 'today')
-            nextB = types.InlineKeyboardButton(text = '>', callback_data = 'next')
-            markup.row(previousB,todayB,nextB)
-            self.bot.send_message(message.chat.id,str(self.today.strftime("%A, %d. %B")), reply_markup=markup)
-        else:
-            Accessed = False
+                previousB = types.InlineKeyboardButton(text = '<', callback_data = 'previous')
+                todayB = types.InlineKeyboardButton(text = '=', callback_data = 'today')
+                nextB = types.InlineKeyboardButton(text = '>', callback_data = 'next')
+                markup.row(previousB,todayB,nextB)
+                self.bot.send_message(message.chat.id,str(self.today.strftime("%A, %d. %B")), reply_markup=markup)
+            else:
+                Accessed = False
         
 
         #callback
