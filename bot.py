@@ -6,7 +6,6 @@ from telebot import types
 import datetime
 import pytz
 
-
 API_KEY = os.environ['API_KEY']
 DATABASE_URL=os.environ['DATABASE_URL']
 PARITY_OF_THE_WEEK = os.environ['PARITY_OF_THE_WEEK']
@@ -56,7 +55,7 @@ class Bot:
     def start(self):
         @self.bot.message_handler(commands=['start'])
         def start_message(message):
-            self.bot.send_message(message.chat.id,'Введите пароль:', reply_markup=markup)
+            self.bot.send_message(message.chat.id,'Введите пароль:')
 
         @self.bot.message_handler(func=lambda message: True, content_types=['text'])
         def check_password(message):
