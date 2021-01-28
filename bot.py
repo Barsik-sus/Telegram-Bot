@@ -10,14 +10,18 @@ import pytz
 API_KEY = os.environ['API_KEY']
 DATABASE_URL=os.environ['DATABASE_URL']
 PARITY_OF_THE_WEEK = os.environ['PARITY_OF_THE_WEEK']
+PASSWORD = os.environ['PASSWORD']
 
 db = database.DB(DATABASE_URL)
 
+Accessed = False
 '''
  gets datetime
  returns [lesson, url]
 '''
 def get_timetable(date):
+    if not Accessed:
+        return []
     chet = int(date.astimezone().isocalendar()[1])%2 == int(PARITY_OF_THE_WEEK)
     weekday = date.weekday()
     day = db.execute('select * from dow where id = '+str(weekday))[0]
@@ -52,6 +56,12 @@ class Bot:
     def start(self):
         @self.bot.message_handler(commands=['start'])
         def start_message(message):
+            self.bot.send_message(message.chat.id,'Введите пароль:', reply_markup=markup)
+
+    @bot.message_handler(func=lambda message: True, content_types=['text'])
+    def check_password(message):
+        if message.text == PASSWORD:
+            Accessed = True
             timetable = get_timetable(self.today)
 
             markup = self.generate_markup(timetable)
@@ -60,8 +70,10 @@ class Bot:
             todayB = types.InlineKeyboardButton(text = '=', callback_data = 'today')
             nextB = types.InlineKeyboardButton(text = '>', callback_data = 'next')
             markup.row(previousB,todayB,nextB)
-
             self.bot.send_message(message.chat.id,str(self.today.strftime("%A, %d. %B")), reply_markup=markup)
+        else:
+            Accessed = False
+        
 
         #callback
         @self.bot.callback_query_handler(func=lambda call: True)
