@@ -13,14 +13,11 @@ PASSWORD = os.environ['PASSWORD']
 
 db = database.DB(DATABASE_URL)
 
-Accessed = False
 '''
  gets datetime
  returns [lesson, url]
 '''
 def get_timetable(date):
-    if Accessed == False:
-        return []
     chet = int(date.astimezone().isocalendar()[1])%2 == int(PARITY_OF_THE_WEEK)
     weekday = date.weekday()
     day = db.execute('select * from dow where id = '+str(weekday))[0]
@@ -60,7 +57,6 @@ class Bot:
         @self.bot.message_handler(func=lambda message: True, content_types=['text'])
         def check_password(message):
             if message.text == PASSWORD:
-                Accessed = True
                 timetable = get_timetable(self.today)
 
                 markup = self.generate_markup(timetable)
