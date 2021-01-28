@@ -8,9 +8,7 @@ import pytz
 
 
 API_KEY = os.environ['API_KEY']
-DATABASE_URL=os.environ['HEROKU_POSTGRESQL_IVORY_URL']
-
-
+DATABASE_URL=os.environ['DATABASE_URL']
 
 db = database.DB(DATABASE_URL)
 
@@ -26,7 +24,7 @@ def get_timetable(date):
 
     timetable = []
     if isinstance(day[2],list):
-      for lessonFromTable in day[2]: # 2 - числитель 3 - знаменатель
+      for lessonFromTable in day[2 if chet else 3]: # 2 - числитель 3 - знаменатель
         for lessonFromList in lessons:
             if lessonFromTable == lessonFromList[1]:
                 timetable.append([lessonFromTable,lessonFromList[2]])
@@ -46,7 +44,7 @@ class Bot:
         if markup is None:
             markup = types.InlineKeyboardMarkup()
         for lesson in LaU:
-            markup.add(types.InlineKeyboardButton(text = lesson[0], url = 'google.com'))
+            markup.add(types.InlineKeyboardButton(text = lesson[0], url = lesson[1]))
         return markup
 
     #first message
@@ -78,7 +76,7 @@ class Bot:
                     todayB = types.InlineKeyboardButton(text = '=', callback_data = 'today')
                     nextB = types.InlineKeyboardButton(text = '>', callback_data = 'next')
                     markup.row(previousB,todayB,nextB)
-                    self.bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text = 'К' ,reply_markup=markup)
+                    self.bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text = 'К' ,reply_markup=markup)#for update message
                     self.bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text = str(self.today.strftime("%A, %d. %B")), reply_markup=markup)
 
                 if call.data == 'previous':
