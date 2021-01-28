@@ -19,7 +19,7 @@ Accessed = False
  returns [lesson, url]
 '''
 def get_timetable(date):
-    if not Accessed:
+    if Accessed == False:
         return []
     chet = int(date.astimezone().isocalendar()[1])%2 == int(PARITY_OF_THE_WEEK)
     weekday = date.weekday()
@@ -70,9 +70,6 @@ class Bot:
                 nextB = types.InlineKeyboardButton(text = '>', callback_data = 'next')
                 markup.row(previousB,todayB,nextB)
                 self.bot.send_message(message.chat.id,str(self.today.strftime("%A, %d. %B")), reply_markup=markup)
-            else:
-                Accessed = False
-        
 
         #callback
         @self.bot.callback_query_handler(func=lambda call: True)
