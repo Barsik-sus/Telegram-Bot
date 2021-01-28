@@ -18,7 +18,7 @@ db = database.DB(DATABASE_URL)
  returns [lesson, url]
 '''
 def get_timetable(date):
-    chet = int(date.astimezone().isocalendar()[1])%2 == PARITY_OF_THE_WEEK
+    chet = int(date.astimezone().isocalendar()[1])%2 == int(PARITY_OF_THE_WEEK)
     weekday = date.weekday()
     day = db.execute('select * from dow where id = '+str(weekday))[0]
     lessons = db.execute('select * from lesson')
