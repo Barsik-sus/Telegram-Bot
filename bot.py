@@ -9,6 +9,7 @@ import pytz
 
 API_KEY = os.environ['API_KEY']
 DATABASE_URL=os.environ['DATABASE_URL']
+PARITY_OF_THE_WEEK = os.environ['PARITY_OF_THE_WEEK']
 
 db = database.DB(DATABASE_URL)
 
@@ -17,7 +18,7 @@ db = database.DB(DATABASE_URL)
  returns [lesson, url]
 '''
 def get_timetable(date):
-    chet = int(date.astimezone().isocalendar()[1])%2 == 0
+    chet = int(date.astimezone().isocalendar()[1])%2 == PARITY_OF_THE_WEEK
     weekday = date.weekday()
     day = db.execute('select * from dow where id = '+str(weekday))[0]
     lessons = db.execute('select * from lesson')
