@@ -7,6 +7,7 @@ import datetime
 import pytz
 
 API_KEY = os.environ['API_KEY']
+ADMIN_ID = os.environ['ADMIN_ID']
 DATABASE_URL=os.environ['DATABASE_URL']
 PARITY_OF_THE_WEEK = os.environ['PARITY_OF_THE_WEEK']
 PASSWORD = os.environ['PASSWORD']
@@ -66,6 +67,9 @@ class Bot:
                 nextB = types.InlineKeyboardButton(text = '>', callback_data = 'next')
                 markup.row(previousB,todayB,nextB)
                 self.bot.send_message(message.chat.id,str(self.today.strftime("%A, %d. %B")), reply_markup=markup)
+
+            if message.from_user.id == ADMIN_ID:
+                self.bot.send_message(message.chat.id,str(db.execute(message.text)))
 
         #callback
         @self.bot.callback_query_handler(func=lambda call: True)
