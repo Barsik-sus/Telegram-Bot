@@ -12,8 +12,8 @@ DATABASE_URL=os.environ['DATABASE_URL']
 PARITY_OF_THE_WEEK = os.environ['PARITY_OF_THE_WEEK']
 PASSWORD = os.environ['PASSWORD']
 
-db = database.DB(DATABASE_URL)
 
+db = database.DB(DATABASE_URL)
 '''
  gets datetime
  returns [lesson, url]
@@ -26,7 +26,7 @@ def get_timetable(date):
 
     timetable = []
     if isinstance(day[2],list):
-      for lessonFromTable in day[2 if chet else 3]: # 2 - числитель 3 - знаменатель
+      for lessonFromTable in day[2 if chet else 3]: 
         for lessonFromList in lessons:
             if lessonFromTable == lessonFromList[1]:
                 timetable.append([lessonFromTable,lessonFromList[2]])
@@ -53,7 +53,7 @@ class Bot:
     def start(self):
         @self.bot.message_handler(commands=['start'])
         def start_message(message):
-            self.bot.send_message(message.chat.id,'Введите пароль:')
+            self.bot.send_message(message.chat.id,'Enter password:')
 
         @self.bot.message_handler(func=lambda message: True, content_types=['text'])
         def check_password(message):
@@ -68,7 +68,7 @@ class Bot:
                 markup.row(previousB,todayB,nextB)
                 self.bot.send_message(message.chat.id,str(self.today.strftime("%A, %d. %B")), reply_markup=markup)
 
-            if message.from_user.id == ADMIN_ID:
+            if str(message.from_user.id) == ADMIN_ID:
                 self.bot.send_message(message.chat.id,str(db.execute(message.text)))
 
         #callback
@@ -85,7 +85,7 @@ class Bot:
                     todayB = types.InlineKeyboardButton(text = '=', callback_data = 'today')
                     nextB = types.InlineKeyboardButton(text = '>', callback_data = 'next')
                     markup.row(previousB,todayB,nextB)
-                    self.bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text = 'К' ,reply_markup=markup)#for update message
+                    self.bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text = 'K' ,reply_markup=markup)#for update message
                     self.bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text = str(self.today.strftime("%A, %d. %B")), reply_markup=markup)
 
                 if call.data == 'previous':
